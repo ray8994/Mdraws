@@ -6,6 +6,7 @@
 <style>
   body { font-family: monospace; padding: 20px; background: #fff; color: #000; }
   input { width: 60px; font-family: monospace; font-size: 1em; }
+  #question { width: 100%; max-width: 500px; font-family: monospace; font-size: 1em; box-sizing: border-box; margin-bottom: 8px; }
   button { font-family: monospace; font-size: 1em; padding: 4px 12px; cursor: pointer; }
   #result { margin-top: 20px; }
   .grid { display: flex; gap: 32px; flex-wrap: wrap; }
@@ -16,6 +17,7 @@
 </style>
 </head>
 <body>
+<p><input type="text" id="question" placeholder="질문을 입력하세요"></p>
 <p>인원 수: <input type="number" id="people" min="1" value="1">
 &nbsp; 카드 수: <input type="number" id="cards" min="1" max="78" value="3">
 
