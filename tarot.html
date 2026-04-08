@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>타로 뽑기</title>
+<style>
+  body { font-family: monospace; padding: 20px; background: #fff; color: #000; }
+  input { width: 60px; font-family: monospace; font-size: 1em; }
+  button { font-family: monospace; font-size: 1em; padding: 4px 12px; cursor: pointer; }
+  #result { margin-top: 20px; }
+  .grid { display: flex; gap: 32px; flex-wrap: wrap; }
+  .person { min-width: 180px; }
+  .person h3 { margin: 0 0 6px 0; border-bottom: 1px solid #000; padding-bottom: 4px; }
+  .person p { margin: 2px 0; }
+  .error { color: red; }
+</style>
+</head>
+<body>
+<p>인원 수: <input type="number" id="people" min="1" value="1">
+&nbsp; 카드 수: <input type="number" id="cards" min="1" max="78" value="3">
+
+&nbsp; <button onclick="draw()">go</button></p>
+<div id="result"></div>
+
+<script>
+const MAJOR = [
+  "#0 The Fool","#1 The Magician","#2 The High Priestess","#3 The Empress",
+  "#4 The Emperor","#5 The Hierophant","#6 The Lovers","#7 The Chariot",
+  "#8 Strength","#9 The Hermit","#10 Wheel of Fortune","#11 Justice",
+  "#12 The Hanged Man","#13 Death","#14 Temperance","#15 The Devil",
+  "#16 The Tower","#17 The Star","#18 The Moon","#19 The Sun",
+  "#20 Judgement","#21 The World"
+];
+
+const MINOR = (function() {
+  const suits = ["Wands","Cups","Swords","Pentacles"];
+  const ranks = ["Ace","2","3","4","5","6","7","8","9","10","Page","Knight","Queen","King"];
+  const cards = [];
+  for (const suit of suits)
+    for (const rank of ranks)
+      cards.push(rank === "Ace" ? `Ace of ${suit}` : `${rank} of ${suit}`);
+  return cards;
+})();
+
+const DECK = [...MAJOR, ...MINOR]; // 78장
+
+function draw() {
+  const n = parseInt(document.getElementById("people").value);
+  const k = parseInt(document.getElementById("cards").value);
+  const out = document.getElementById("result");
+
+  if (!n || n < 1 || !k || k < 1 || k > 78) {
+    out.innerHTML = '<p class="error">올바른 숫자를 입력해 주세요. (카드 수는 1~78)</p>';
+    return;
+  }
+
+  const cols = [];
+  for (let i = 0; i < n; i++) {
+    const shuffled = [...DECK].sort(() => Math.random() - 0.5);
+    const drawn = shuffled.slice(0, k);
+    let html = `<div class="person"><h3>[${i + 1}]</h3>`;
+    drawn.forEach((card, j) => { html += `<p>${j + 1}: ${card}</p>`; });
+    html += "</div>";
+    cols.push(html);
+  }
+
+  out.innerHTML = `<div class="grid">${cols.join("")}</div>`;
+}
+</script>
+</body>
+</html>
